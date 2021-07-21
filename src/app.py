@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.9
 import sys
 
-from PyQt5 import QtGui, QtCore, uic
+from PyQt5 import QtGui, QtCore
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication
 

@@ -1,0 +1,3 @@
+# Configuration parameters
+export GAME_ROOT=$HOME/Games/guild-wars-2
+export WINE_RUNNER=$HOME/.local/share/lutris/runners/wine/lutris-6.10-7-x86_64/bin/wine
