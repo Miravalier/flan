@@ -22,6 +22,10 @@ export WINEARCH=win64
 export WINE_LARGE_ADDRESS_AWARE=1
 export WINEDLLOVERRIDES='api-ms-win-crt-private-l1-1-0,ucrtbase=n,b;d3d10,d3d10_1,d3d10core,d3d11,dxgi=n;d3d12,nvapi,nvapi64='
 
-# Run the python converter in wine prefix
+# Run the python converter in the wine prefix
 PROG_FILES="$GAME_ROOT/drive_c/Program Files"
 "$WINE_RUNNER" "$PROG_FILES/Python/pythonw.exe" "$PROG_FILES/Flan/converter.py" --daemonize 2>/dev/null
+
+# Run the actual overlay
+. "$HOME/Venv/flan/bin/activate"
+python3.9 "$DIR/src/overlay.py"

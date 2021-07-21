@@ -29,6 +29,7 @@ _SetLastError.argtypes = (DWORD,)
 _SetLastError.restype = None
 
 ERROR_SUCCESS = 0
+ERROR_INVALID_HANDLE = 6
 ERROR_ALREADY_EXISTS = 183
 
 def CreateMutex(name: str, initial_owner: bool = False) -> int:
@@ -47,7 +48,9 @@ def CreateMutex(name: str, initial_owner: bool = False) -> int:
         raise Win32ApiError(error)
 
 def CloseHandle(handle: int) -> None:
-    _CloseHandle(handle)
+    success = bool(_CloseHandle(handle))
+    if not success:
+        raise Win32ApiError(ERROR_INVALID_HANDLE)
 
 def GetLastError() -> int:
     return _GetLastError()
@@ -68,6 +71,8 @@ class Win32ApiError(OSError):
             return "<Error Success>"
         elif self.errno == ERROR_ALREADY_EXISTS:
             return "<Error Already Exists>"
+        elif self.errno == ERROR_INVALID_HANDLE:
+            return "<Error Invalid Handle>"
         else:
             return "<Unknown Error {}>".format(self.errno)
 

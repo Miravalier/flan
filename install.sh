@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Fix home directory if sudo-ing
+if [[ -n "$SUDO_USER" ]]; then
+    export HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+fi
+
 # Get directory of this bash script
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do
@@ -28,9 +33,22 @@ else
     pip install PyQt5
 fi
 
+# Install embedded Python
+if [[ -d "$GAME_ROOT/drive_c/Program Files/Python" ]]; then
+    echo "Python is already installed in the wine prefix"
+else
+    echo "Installing embedded Python into wine prefix"
+    curl $PYTHON_URL -o /tmp/python-embed.zip
+    unzip -q /tmp/python-embed.zip -d "$GAME_ROOT/drive_c/Program Files/Python"
+    rm -f /tmp/python-embed.zip
+fi
+
 # Copy python converter into wine prefix
 echo "Copying converter.py into wine prefix"
 mkdir -p "$GAME_ROOT/drive_c/Program Files/Flan"
 cp "$DIR/src/converter.py" "$GAME_ROOT/drive_c/Program Files/Flan/converter.py"
 
-# Install 
+# Make a link to run.sh in /usr/bin
+echo "Creating /usr/bin/gw2_flan"
+echo -e "#/bin/bash\n$DIR/run.sh" | sudo tee /usr/bin/gw2_flan >/dev/null
+sudo chmod +x /usr/bin/gw2_flan
