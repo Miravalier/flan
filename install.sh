@@ -30,7 +30,7 @@ else
     fi
     # Install python deps
     . "$HOME/Venv/flan/bin/activate"
-    pip install PyQt5
+    pip install PyQt5 requests
 fi
 
 # Install embedded Python

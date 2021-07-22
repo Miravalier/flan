@@ -1,8 +1,8 @@
 import json
 import os
 import struct
-from enum import Enum
-from dataclasses import dataclass, field
+from enum import Enum, Flag
+from dataclasses import dataclass
 
 MUMBLE_LINK_FILE = "/tmp/gw2_mumble_link"
 
@@ -45,6 +45,16 @@ class UISize(Enum):
     NORMAL = 1
     LARGE = 2
     LARGER = 3
+
+
+class UIState(Flag):
+    MAP_OPEN = 1
+    COMPASS_TOP_RIGHT = 2
+    COMPASS_ROTATION_ENABLED = 4
+    GAME_FOCUS = 8
+    COMPETITIVE_MODE = 16
+    TEXTBOX_FOCUS = 32
+    IN_COMBAT = 64
 
 
 @dataclass
@@ -176,15 +186,7 @@ class MumbleLink:
 
     @property
     def ui_state(self):
-        # Bitmask:
-        # Bit 1 = IsMapOpen
-        # Bit 2 = IsCompassTopRight
-        # Bit 3 = DoesCompassHaveRotationEnabled
-        # Bit 4 = Game has focus
-        # Bit 5 = Is in Competitive game mode
-        # Bit 6 = Textbox has focus
-        # Bit 7 = Is in Combat
-        return self.parse("I", 1156)
+        return UIState(self.parse("I", 1156))
 
     @property
     def compass_width(self):
