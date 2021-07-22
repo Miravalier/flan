@@ -1,9 +1,15 @@
 #!/usr/bin/env python3.9
 import sys
+from mumble_link import MumbleLink
 
 from PyQt5 import QtGui, QtCore
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication
+
+
+link = MumbleLink()
+print(link)
+sys.exit(0)
 
 
 class MainWindow(QMainWindow):
