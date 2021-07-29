@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Fix home directory if sudo-ing
+if [[ -n "$SUDO_USER" ]]; then
+    export HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+fi
+
 # Get directory of this bash script
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do
@@ -27,5 +32,5 @@ PROG_FILES="$GAME_ROOT/drive_c/Program Files"
 "$WINE_RUNNER" "$PROG_FILES/Python/pythonw.exe" "$PROG_FILES/Flan/converter.py" --daemonize 2>/dev/null
 
 # Run the actual overlay
-. "$HOME/Venv/flan/bin/activate"
+. "$VENV_ROOT/flan/bin/activate"
 python3.9 "$DIR/src/overlay.py"

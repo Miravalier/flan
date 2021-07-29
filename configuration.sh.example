@@ -2,3 +2,4 @@
 export GAME_ROOT="$HOME/Games/guild-wars-2"
 export WINE_RUNNER="$HOME/.local/share/lutris/runners/wine/lutris-6.10-7-x86_64/bin/wine"
 export PYTHON_URL="https://www.python.org/ftp/python/3.9.6/python-3.9.6-embed-amd64.zip"
+export VENV_ROOT="$HOME/Venv"

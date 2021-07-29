@@ -18,19 +18,19 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 . "$DIR/configuration.sh"
 
 # Create venv
-if [[ -d "$HOME/Venv/flan" ]]; then
+if [[ -d "$VENV_ROOT/flan" ]]; then
     echo "A venv already exists for flan"
 else
     echo "Creating a venv"
-    mkdir -p "$HOME/Venv/flan"
-    python3.9 -m venv "$HOME/Venv/flan"
+    mkdir -p "$VENV_ROOT/flan"
+    python3.9 -m venv "$VENV_ROOT/flan"
     if [[ $? != 0 ]]; then
-        rm -rf "$HOME/Venv/flan"
+        rm -rf "$VENV_ROOT/flan"
         exit 1
     fi
     # Install python deps
-    . "$HOME/Venv/flan/bin/activate"
-    pip install PyQt5 requests
+    . "$VENV_ROOT/flan/bin/activate"
+    pip install PyQt5 requests scipy numpy
 fi
 
 # Install embedded Python

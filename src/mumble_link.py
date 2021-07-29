@@ -1,6 +1,7 @@
 import json
 import os
 import struct
+import numpy as np
 from enum import Enum, Flag
 from dataclasses import dataclass
 
@@ -67,7 +68,7 @@ class Identity:
     world_id: int
     team_color_id: int
     commander: bool
-    field_of_view: float
+    fov: float
     ui_size: UISize
 
 
@@ -87,7 +88,11 @@ class MumbleLink:
         self.buffer = bytearray(4096)
         self.update()
 
+    def close(self):
+        os.close(self.fd)
+
     def update(self):
+        os.lseek(self.fd, 0, os.SEEK_SET)
         os.readv(self.fd, [self.buffer])
 
     def parse(self, fmt: str, offset: int):
@@ -111,15 +116,15 @@ class MumbleLink:
 
     @property
     def avatar_position(self):
-        return self.unpack("3f", 8)
+        return np.array(self.unpack("3f", 8))
 
     @property
     def avatar_front(self):
-        return self.unpack("3f", 20)
+        return np.array(self.unpack("3f", 20))
 
     @property
     def avatar_top(self):
-        return self.unpack("3f", 32)
+        return np.array(self.unpack("3f", 32))
 
     @property
     def name(self):
@@ -127,15 +132,15 @@ class MumbleLink:
 
     @property
     def camera_position(self):
-        return self.unpack("3f", 556)
+        return np.array(self.unpack("3f", 556))
 
     @property
     def camera_front(self):
-        return self.unpack("3f", 568)
+        return np.array(self.unpack("3f", 568))
 
     @property
     def camera_top(self):
-        return self.unpack("3f", 580)
+        return np.array(self.unpack("3f", 580))
 
     @property
     def identity_raw(self):
