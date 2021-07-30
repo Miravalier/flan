@@ -153,7 +153,7 @@ class Camera:
         self.camera_to_world[:3, 1] = y_axis._np_arr
         self.camera_to_world[:3, 2] = focus._np_arr
         self.camera_to_world[3, :3] = location._np_arr
-        # TODO fix this
+        # ???
         self.camera_to_world = self.camera_to_world.transpose()
         print("CameraToWorld transform:", self.camera_to_world, sep='\n')
 
@@ -172,8 +172,9 @@ class Camera:
         self.perspective_transform[2,3] = 1
         self.perspective_transform[3,2] = (zf * zn) / (zn - zf)
         self.perspective_transform[3,3] = 0
+        # ???
         self.perspective_transform = self.perspective_transform.transpose()
-        self.perspective_transform = self.perspective_transform.inverse()
+        #self.perspective_transform = self.perspective_transform.inverse()
         print("Taco Persp Transform:", self.perspective_transform, sep='\n')
 
     def worldToScreenPoint(self, point: Vector3) -> Vector2:
@@ -181,20 +182,25 @@ class Camera:
         height = self.screenShape.y
         width_percent = width / (width + height)
         height_percent = height / (width + height)
-        magic = 0.25
+        # ???
+        magic = 5
         canvas_width = width_percent * magic
         canvas_height = height_percent * magic
 
         # Convert from world to camera space
         cameraPoint = point
+        # ???
         #cameraPoint = self.perspective_transform.apply(cameraPoint)
         cameraPoint = self.world_to_camera.apply(cameraPoint)
         cameraPoint = self.perspective_transform.apply(cameraPoint)
 
         # Convert from camera space to screen coordinates
         screenPoint = Vector2()
-        screenPoint.x = (cameraPoint.x / -cameraPoint.z)
-        screenPoint.y = (cameraPoint.y / -cameraPoint.z)
+        # ???
+        #screenPoint.x = (cameraPoint.x / -cameraPoint.z)
+        #screenPoint.y = (cameraPoint.y / -cameraPoint.z)
+        screenPoint.x = (cameraPoint.x / cameraPoint.z)
+        screenPoint.y = (cameraPoint.y / cameraPoint.z)
 
         print("ScreenPoint Pre-normal:", screenPoint)
 

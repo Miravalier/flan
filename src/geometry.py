@@ -198,6 +198,7 @@ class TransformMatrix:
     def apply(self, point: Vector3):
         point4 = np.ndarray(4)
         point4[:3] = point._np_arr
+        # 1 means translate and rotate, 0 means rotate only
         point4[3] = 1
         result = self._np_arr @ point4
         result.resize(3)
